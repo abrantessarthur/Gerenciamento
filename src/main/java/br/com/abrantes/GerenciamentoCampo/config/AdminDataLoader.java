@@ -22,7 +22,6 @@ public class AdminDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // 1. Garante que as Roles existam no banco
         RolesEntity roleAdmin = rolesRepository.findByNome("ROLE_ADMIN")
                 .orElseGet(() -> rolesRepository.save(
                         RolesEntity.builder().nome("ROLE_ADMIN").build()));
@@ -31,12 +30,11 @@ public class AdminDataLoader implements CommandLineRunner {
                 .orElseGet(() -> rolesRepository.save(
                         RolesEntity.builder().nome(RoleTypeEnum.ROLE_USUARIO.name()).build()));
 
-        // 2. Cria o usuário Admin padrão se ele ainda não existir
         if (usuarioRepository.findByEmail("admin@email.com").isEmpty()) {
             UsuarioEntity admin = UsuarioEntity.builder()
                     .nome("Administrador")
                     .email("admin@email.com")
-                    .senha(passwordEncoder.encode("admin123")) // Criptografa com BCrypt
+                    .senha(passwordEncoder.encode("admin123"))
                     .roles(Set.of(roleAdmin))
                     .build();
 
