@@ -71,6 +71,29 @@ A API sobe em `http://localhost:8080`. Documentação interativa disponível em 
 | GET | `/reservas/campo-mais-usado` | Campo mais reservado (admin) |
 | GET | `/reservas/campo-mais-lucrativo` | Campo mais lucrativo (admin) |
 
+## 🐳 Rodando com Docker 
+
+1. Clone o repositório:
+   \`\`\`bash
+   git clone https://github.com/abrantessarthur/Gerenciamento.git
+   cd Gerenciamento
+   \`\`\`
+
+2. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+   \`\`\`
+   EMAIL_USERNAME=seu_email@gmail.com
+   EMAIL_PASSWORD=sua_senha_de_app_do_gmail
+   JWT_KEY=uma_chave_secreta_bem_grande_e_aleatoria
+   \`\`\`
+
+3. Suba a aplicação:
+   \`\`\`bash
+   docker compose up --build
+   \`\`\`
+
+A API estará disponível em `http://localhost:8080`.
+A documentação da API (Swagger) estará em `http://localhost:8080/swagger-ui/index.html`.
+
 ## Autor
 
 Desenvolvido por [Arthur Abrantes](https://github.com/abrantessarthur).
