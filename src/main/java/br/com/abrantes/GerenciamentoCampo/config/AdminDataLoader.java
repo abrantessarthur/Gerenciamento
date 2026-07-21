@@ -39,7 +39,8 @@ public class AdminDataLoader implements CommandLineRunner {
                     .build();
 
             usuarioRepository.save(admin);
-            System.out.println("✅ ADMIN CRIADO AUTOMATICAMENTE: admin@email.com | senha: admin123");
+          
         }
     }
+    
 }
