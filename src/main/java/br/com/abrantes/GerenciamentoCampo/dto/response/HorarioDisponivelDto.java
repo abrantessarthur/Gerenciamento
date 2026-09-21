@@ -1,4 +1,4 @@
-package br.com.abrantes.GerenciamentoCampo.dto;
+package br.com.abrantes.GerenciamentoCampo.dto.response;
 
 import java.time.LocalDateTime;
 

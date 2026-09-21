@@ -1,13 +1,12 @@
 package br.com.abrantes.GerenciamentoCampo.service;
 
-import br.com.abrantes.GerenciamentoCampo.dto.CampoDto;
-import br.com.abrantes.GerenciamentoCampo.dto.CriarReservaDto;
-import br.com.abrantes.GerenciamentoCampo.dto.HorarioDisponivelDto;
-import br.com.abrantes.GerenciamentoCampo.dto.ReservaDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.CampoDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.CriarReservaDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.HorarioDisponivelDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.ReservaDto;
 import br.com.abrantes.GerenciamentoCampo.entity.CampoEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.ReservaEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.UsuarioEntity;
-import br.com.abrantes.GerenciamentoCampo.enums.Status;
 import br.com.abrantes.GerenciamentoCampo.enums.StatusReserva;
 import br.com.abrantes.GerenciamentoCampo.exception.*;
 import br.com.abrantes.GerenciamentoCampo.repository.CampoRepository;
@@ -16,7 +15,6 @@ import br.com.abrantes.GerenciamentoCampo.repository.ReservasProjection;
 import br.com.abrantes.GerenciamentoCampo.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

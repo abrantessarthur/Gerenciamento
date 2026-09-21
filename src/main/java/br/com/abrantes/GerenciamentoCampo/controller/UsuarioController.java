@@ -1,6 +1,6 @@
 package br.com.abrantes.GerenciamentoCampo.controller;
 
-import br.com.abrantes.GerenciamentoCampo.dto.UserResponseDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.UserResponseDto;
 import br.com.abrantes.GerenciamentoCampo.repository.UsuariosProjection;
 import br.com.abrantes.GerenciamentoCampo.service.UsuarioService;
 import lombok.RequiredArgsConstructor;

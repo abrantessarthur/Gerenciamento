@@ -1,7 +1,7 @@
 package br.com.abrantes.GerenciamentoCampo.controller;
 import br.com.abrantes.GerenciamentoCampo.repository.CamposProjection;
 import br.com.abrantes.GerenciamentoCampo.service.CampoService;
-import br.com.abrantes.GerenciamentoCampo.dto.CampoDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.CampoDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

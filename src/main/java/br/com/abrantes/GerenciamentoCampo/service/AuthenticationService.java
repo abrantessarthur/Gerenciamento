@@ -1,13 +1,13 @@
 package br.com.abrantes.GerenciamentoCampo.service;
 
-import br.com.abrantes.GerenciamentoCampo.dto.RedefinirSenhaDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.RedefinirSenhaDto;
 import br.com.abrantes.GerenciamentoCampo.entity.RolesEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.UsuarioEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.RoleTypeEnum;
 import br.com.abrantes.GerenciamentoCampo.config.TokenProvider;
-import br.com.abrantes.GerenciamentoCampo.dto.LoginDto;
-import br.com.abrantes.GerenciamentoCampo.dto.RegistroDto;
-import br.com.abrantes.GerenciamentoCampo.dto.TokenResponseDTO;
+import br.com.abrantes.GerenciamentoCampo.dto.request.LoginDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.RegistroDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.TokenResponseDTO;
 import br.com.abrantes.GerenciamentoCampo.exception.BadRequestException;
 import br.com.abrantes.GerenciamentoCampo.repository.RolesRepository;
 import br.com.abrantes.GerenciamentoCampo.repository.UsuarioRepository;

@@ -1,7 +1,6 @@
-package br.com.abrantes.GerenciamentoCampo.dto;
+package br.com.abrantes.GerenciamentoCampo.dto.response;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 public record RedefinirSenhaDto(
         @NotBlank

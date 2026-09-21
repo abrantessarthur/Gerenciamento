@@ -1,6 +1,6 @@
 package br.com.abrantes.GerenciamentoCampo.service;
 
-import br.com.abrantes.GerenciamentoCampo.dto.UserResponseDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.UserResponseDto;
 import br.com.abrantes.GerenciamentoCampo.entity.UsuarioEntity;
 import br.com.abrantes.GerenciamentoCampo.exception.UsuarioNaoEncontradoException;
 import br.com.abrantes.GerenciamentoCampo.repository.UsuarioRepository;
@@ -8,6 +8,7 @@ import br.com.abrantes.GerenciamentoCampo.repository.UsuariosProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,19 +35,12 @@ public class UsuarioService {
                 ;
     }
 
-    @Transactional(readOnly = true)
-    public UserResponseDto listarUsuarioPorId(Long id) {
-        return usuarioRepository.findById(id)
-                .map(UserResponseDto::new)
-                .orElseThrow(() ->
-                        new UsuarioNaoEncontradoException("Usuário inexistente"));
-    }
-
     public void deletarUsuario(Long id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new UsuarioNaoEncontradoException("Usuário inexistente");
+        if (usuarioRepository.findById(id).isPresent()) {
+            usuarioRepository.deleteById(id);
+        }else {
+            throw new UsernameNotFoundException("User not found");
         }
-        usuarioRepository.deleteById(id);
     }
 
     public Page<UsuariosProjection> getAllUsuariosPageable(Integer page, Integer size){

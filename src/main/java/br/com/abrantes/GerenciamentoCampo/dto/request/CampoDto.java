@@ -1,4 +1,4 @@
-package br.com.abrantes.GerenciamentoCampo.dto;
+package br.com.abrantes.GerenciamentoCampo.dto.request;
 
 import br.com.abrantes.GerenciamentoCampo.entity.CampoEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.Status;
@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 
 public record CampoDto(
         @NotBlank

@@ -1,23 +1,17 @@
 package br.com.abrantes.GerenciamentoCampo.service;
 
-import br.com.abrantes.GerenciamentoCampo.dto.HorarioDisponivelDto;
 import br.com.abrantes.GerenciamentoCampo.entity.CampoEntity;
-import br.com.abrantes.GerenciamentoCampo.dto.CampoDto;
-import br.com.abrantes.GerenciamentoCampo.entity.ReservaEntity;
+import br.com.abrantes.GerenciamentoCampo.dto.request.CampoDto;
 import br.com.abrantes.GerenciamentoCampo.exception.BadRequestException;
 import br.com.abrantes.GerenciamentoCampo.exception.CampoNaoEncontradoException;
 import br.com.abrantes.GerenciamentoCampo.repository.CampoRepository;
 import br.com.abrantes.GerenciamentoCampo.repository.CamposProjection;
-import br.com.abrantes.GerenciamentoCampo.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

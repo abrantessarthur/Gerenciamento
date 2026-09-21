@@ -1,11 +1,8 @@
-package br.com.abrantes.GerenciamentoCampo.dto;
+package br.com.abrantes.GerenciamentoCampo.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record RegistroDto(
-        @NotBlank
-        String nome,
-
+public record LoginDto(
         @NotBlank
         String email,
 

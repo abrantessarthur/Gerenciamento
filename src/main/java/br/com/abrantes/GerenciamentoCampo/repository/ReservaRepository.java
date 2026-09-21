@@ -1,6 +1,6 @@
 package br.com.abrantes.GerenciamentoCampo.repository;
 
-import br.com.abrantes.GerenciamentoCampo.dto.CampoDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.CampoDto;
 import br.com.abrantes.GerenciamentoCampo.entity.CampoEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.ReservaEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.StatusReserva;
