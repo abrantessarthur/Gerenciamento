@@ -39,8 +39,6 @@ public class AdminDataLoader implements CommandLineRunner {
                     .build();
 
             usuarioRepository.save(admin);
-          
         }
     }
-    
 }

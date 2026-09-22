@@ -36,7 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if(tokenProvider.isValid(authorizationHeader.substring(7))){
-            // regras setar autenticacao
             String username = tokenProvider.extractUsername(authorizationHeader.substring(7));
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
