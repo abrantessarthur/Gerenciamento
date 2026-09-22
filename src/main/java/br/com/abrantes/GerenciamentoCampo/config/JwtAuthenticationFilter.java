@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        //a
 
         if(tokenProvider.isValid(authorizationHeader.substring(7))){
             // regras setar autenticacao
