@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/gerenciamentoCampo
-    username: root
-    password: abrantes
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/gerenciamentoCampo}
+    username: ${SPRING_DATASOURCE_USERNAME:arthur}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -27,4 +27,4 @@ spring:
 
 jwt:
   expiration: ${JWT_EXPIRATION:900000}
-  key: ${JWT_KEY:...}
+  key: ${JWT_KEY:local-development-jwt-key-with-at-least-32-bytes}
