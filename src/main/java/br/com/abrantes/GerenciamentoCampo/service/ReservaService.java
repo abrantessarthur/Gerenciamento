@@ -36,6 +36,7 @@ public class ReservaService {
     private final UsuarioRepository usuarioRepository;
     private final CampoRepository campoRepository;
 
+    @Transactional
     public ReservaDto reservarCampo(
             CriarReservaDto reservaDto
     ) {
@@ -44,6 +45,14 @@ public class ReservaService {
                     "A hora de início deve ser anterior à hora de fim."
             );
         }
+
+        CampoEntity campo = campoRepository.findByIdForUpdate
+                        (reservaDto.campoId())
+                .orElseThrow(() ->
+                        new CampoNaoEncontradoException(
+                                "Campo não encontrado."
+                        )
+                );
 
         boolean conflito = reservaRepository.existsOverlappingReserva(
                 reservaDto.campoId(),
@@ -68,13 +77,7 @@ public class ReservaService {
                 );
 
 
-        CampoEntity campo = campoRepository
-                .findById(reservaDto.campoId())
-                .orElseThrow(() ->
-                        new CampoNaoEncontradoException(
-                                "Campo não encontrado."
-                        )
-                );
+
 
         validarHorarioFuncionamento(campo, reservaDto.horaInicio(), reservaDto.horaFim());
 

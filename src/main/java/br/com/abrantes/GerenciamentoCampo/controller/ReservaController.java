@@ -27,7 +27,6 @@ public class ReservaController {
     private final ReservaService reservaService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<ReservaDto> reservarCampo(@Valid @RequestBody CriarReservaDto reserva){
         ReservaDto reservaCriada =
                 reservaService.reservarCampo(reserva);

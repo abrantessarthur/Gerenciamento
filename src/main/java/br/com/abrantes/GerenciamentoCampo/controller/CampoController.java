@@ -22,7 +22,6 @@ public class CampoController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
-    @Transactional
     public ResponseEntity<CampoDto> cadastrarCampo(@Valid @RequestBody CampoDto campoDto) {
         campoService.criarCampo(campoDto);
         return ResponseEntity.ok().body(campoDto);
