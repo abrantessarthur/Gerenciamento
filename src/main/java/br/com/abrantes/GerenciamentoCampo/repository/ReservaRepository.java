@@ -62,6 +62,10 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
     SELECT COUNT(r) > 0 
     FROM ReservaEntity r 
     WHERE r.campo.id = :campoId 
+    AND r.status IN (
+        br.com.abrantes.GerenciamentoCampo.enums.StatusReserva.PENDENTE,
+        br.com.abrantes.GerenciamentoCampo.enums.StatusReserva.CONFIRMADA
+    )
       AND (:horaInicio < r.horaFim AND :horaFim > r.horaInicio)
       AND (:idReserva IS NULL OR r.id <> :idReserva)
 """)
