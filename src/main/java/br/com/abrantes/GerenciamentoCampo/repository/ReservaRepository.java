@@ -57,7 +57,9 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
         """
     )
     Page<ReservasProjection> getAllReservasPageable(Pageable pageable);
-
+    Optional<ReservaEntity> findByIdempotencyKey(
+            String idempotencyKey
+    );
     @Query("""
     SELECT COUNT(r) > 0 
     FROM ReservaEntity r 

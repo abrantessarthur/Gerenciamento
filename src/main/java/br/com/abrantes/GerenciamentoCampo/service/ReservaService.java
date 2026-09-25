@@ -38,7 +38,7 @@ public class ReservaService {
 
     @Transactional
     public ReservaDto reservarCampo(
-            CriarReservaDto reservaDto
+            CriarReservaDto reservaDto, String idempotencyKey
     ) {
         if (!reservaDto.horaInicio().isBefore(reservaDto.horaFim())) {
             throw new BadRequestException(
@@ -53,6 +53,8 @@ public class ReservaService {
                                 "Campo não encontrado."
                         )
                 );
+        Optional<ReservaEntity> reservaExistente =
+                reservaRepository.findByIdempotencyKey(idempotencyKey);
 
         boolean conflito = reservaRepository.existsOverlappingReserva(
                 reservaDto.campoId(),
@@ -94,6 +96,7 @@ public class ReservaService {
         reserva.setHoraFim(reservaDto.horaFim());
         reserva.setValor(valorCalculado);
         reserva.setStatus(StatusReserva.PENDENTE);
+        reserva.setIdempotencyKey(idempotencyKey);
         ReservaEntity salva = reservaRepository.save(reserva);
 
         return new ReservaDto(salva);
@@ -298,4 +301,5 @@ public class ReservaService {
             );
         }
     }
+
 }

@@ -27,9 +27,9 @@ public class ReservaController {
     private final ReservaService reservaService;
 
     @PostMapping
-    public ResponseEntity<ReservaDto> reservarCampo(@Valid @RequestBody CriarReservaDto reserva){
+    public ResponseEntity<ReservaDto> reservarCampo(@Valid @RequestBody CriarReservaDto reserva, @RequestHeader("Idempotency-Key") String idempotencyKey){
         ReservaDto reservaCriada =
-                reservaService.reservarCampo(reserva);
+                reservaService.reservarCampo(reserva, idempotencyKey);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(reservaCriada);

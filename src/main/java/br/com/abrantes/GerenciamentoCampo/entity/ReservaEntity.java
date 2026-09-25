@@ -35,4 +35,7 @@ public class ReservaEntity {
 
     @Enumerated(EnumType.STRING)
     private StatusReserva status;
+
+    @Column(value = "idempotency_key", nullable = false, unique = true)
+    private String idempotencyKey;
 }
