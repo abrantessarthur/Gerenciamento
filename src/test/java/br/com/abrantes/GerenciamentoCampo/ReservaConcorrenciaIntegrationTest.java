@@ -11,6 +11,7 @@ import br.com.abrantes.GerenciamentoCampo.repository.CampoRepository;
 import br.com.abrantes.GerenciamentoCampo.repository.ReservaRepository;
 import br.com.abrantes.GerenciamentoCampo.repository.UsuarioRepository;
 import br.com.abrantes.GerenciamentoCampo.service.ReservaService;
+import br.com.abrantes.GerenciamentoCampo.exception.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,8 @@ import org.testcontainers.mysql.MySQLContainer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -93,11 +92,12 @@ public class ReservaConcorrenciaIntegrationTest {
         AtomicInteger conflitos = new AtomicInteger();
 
         for (int i = 0; i < 50; i++) {
+            String chave = "concorrencia-" + i;
             executor.submit(() -> {
                 try {
                     try {
                         countDownLatch.await();
-                        reservaService.reservarCampo(criar, "11");
+                        reservaService.reservarCampo(criar, chave);
                         sucessos.incrementAndGet();
                     } catch (HorarioIndisponivelException e) {
                         conflitos.incrementAndGet();
@@ -140,4 +140,50 @@ public class ReservaConcorrenciaIntegrationTest {
 
         assertEquals(1L, reservaRepository.count());
     }
+
+    @Test
+    void deveRetornarAMesmaReservaParaChamadasSimultaneasComMesmaChave() throws InterruptedException {
+        CriarReservaDto criar = new CriarReservaDto(usuarioId, campoId, dataReserva.atTime(10, 0), dataReserva.atTime(11, 0));
+        ExecutorService executor = Executors.newFixedThreadPool(50);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        Set<Long> ids = ConcurrentHashMap.newKeySet();
+        AtomicInteger falhas = new AtomicInteger();
+        for (int i = 0; i < 50; i++) {
+            executor.submit(() -> {
+                try {
+                    try {
+                        countDownLatch.await();
+                        ReservaDto resposta =
+                                reservaService.reservarCampo(criar, "mesma-chave");
+
+                        ids.add(resposta.id());
+                    } catch (RuntimeException e) {
+                        falhas.incrementAndGet();
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+        countDownLatch.countDown();
+        executor.shutdown();
+        executor.awaitTermination(30, TimeUnit.SECONDS);
+        boolean finalizou = executor.isTerminated();
+        assertTrue(finalizou);
+        assertEquals(1, ids.size());
+        assertEquals(0, falhas.get());
+        assertEquals(1L, reservaRepository.count());
+    }
+
+    @Test
+    void naoDeveAceitarChaveVazia(){
+        CriarReservaDto criar = new CriarReservaDto(usuarioId, campoId, dataReserva.atTime(10, 0), dataReserva.atTime(11, 0));
+        assertThrows(
+                BadRequestException.class,
+                () -> reservaService.reservarCampo(criar, "")
+        );
+        assertEquals(0L, reservaRepository.count());
+    }
+
 }
