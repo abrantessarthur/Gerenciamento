@@ -47,6 +47,9 @@ public class ReservaService {
             );
         }
 
+        if(idempotencyKey == null || idempotencyKey.isBlank()) {
+            throw new BadRequestException("A chave de idempotência é obrigatória.");
+        }
         CampoEntity campo = campoRepository.findByIdForUpdate
                         (reservaDto.campoId())
                 .orElseThrow(() ->
