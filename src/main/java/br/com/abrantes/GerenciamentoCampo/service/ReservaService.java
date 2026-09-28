@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -55,13 +56,27 @@ public class ReservaService {
                 );
         Optional<ReservaEntity> reservaExistente =
                 reservaRepository.findByIdempotencyKey(idempotencyKey);
+        if(reservaExistente.isPresent()){
+            ReservaEntity existente = reservaExistente.get();
+            boolean mesmaRequisicao =
+                    Objects.equals(existente.getUsuario().getId(), reservaDto.usuarioId())
+                    && Objects.equals(existente.getCampo().getId(), reservaDto.campoId())
+                    && Objects.equals(existente.getHoraInicio(), reservaDto.horaInicio())
+                    && Objects.equals(existente.getHoraFim(), reservaDto.horaFim());
+            if (!mesmaRequisicao) {
+                throw new IdempotencyKeyConflictException(
+                        "Chave de idempotência já utilizada com dados diferentes."
+                );
+            }
+            return new ReservaDto(existente);
+        }
 
-        boolean conflito = reservaRepository.existsOverlappingReserva(
-                reservaDto.campoId(),
-                reservaDto.horaInicio(),
-                reservaDto.horaFim(),
-                null
-        );
+            boolean conflito = reservaRepository.existsOverlappingReserva(
+                    reservaDto.campoId(),
+                    reservaDto.horaInicio(),
+                    reservaDto.horaFim(),
+                    null
+            );
 
         if (conflito) {
             throw new HorarioIndisponivelException(

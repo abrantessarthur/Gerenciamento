@@ -3,6 +3,7 @@ package br.com.abrantes.GerenciamentoCampo.handler;
 import br.com.abrantes.GerenciamentoCampo.exception.BadRequestException;
 import br.com.abrantes.GerenciamentoCampo.exception.ErrorResponse;
 import br.com.abrantes.GerenciamentoCampo.exception.HorarioIndisponivelException;
+import br.com.abrantes.GerenciamentoCampo.exception.IdempotencyKeyConflictException;
 import br.com.abrantes.GerenciamentoCampo.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HorarioIndisponivelException.class)
     public ResponseEntity<ErrorResponse> handleHorarioIndisponivel(HorarioIndisponivelException ex) {
+        return build(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(IdempotencyKeyConflictException.class)
+    public ResponseEntity<ErrorResponse> idempotencyKeyConflictException(IdempotencyKeyConflictException ex) {
         return build(HttpStatus.CONFLICT, ex.getMessage());
     }
 
