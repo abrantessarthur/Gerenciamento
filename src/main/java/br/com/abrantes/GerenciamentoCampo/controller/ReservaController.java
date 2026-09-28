@@ -3,7 +3,7 @@ package br.com.abrantes.GerenciamentoCampo.controller;
 import br.com.abrantes.GerenciamentoCampo.dto.request.CampoDto;
 import br.com.abrantes.GerenciamentoCampo.dto.request.CriarReservaDto;
 import br.com.abrantes.GerenciamentoCampo.dto.response.HorarioDisponivelDto;
-import br.com.abrantes.GerenciamentoCampo.dto.request.ReservaDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.ReservaDto;
 import br.com.abrantes.GerenciamentoCampo.enums.StatusReserva;
 import br.com.abrantes.GerenciamentoCampo.repository.ReservasProjection;
 import br.com.abrantes.GerenciamentoCampo.service.ReservaService;

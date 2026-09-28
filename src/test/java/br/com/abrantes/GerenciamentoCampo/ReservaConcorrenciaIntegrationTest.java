@@ -1,7 +1,7 @@
 package br.com.abrantes.GerenciamentoCampo;
 
 import br.com.abrantes.GerenciamentoCampo.dto.request.CriarReservaDto;
-import br.com.abrantes.GerenciamentoCampo.dto.request.ReservaDto;
+import br.com.abrantes.GerenciamentoCampo.dto.response.ReservaDto;
 import br.com.abrantes.GerenciamentoCampo.entity.CampoEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.UsuarioEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.Status;

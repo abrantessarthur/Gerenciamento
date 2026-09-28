@@ -1,4 +1,4 @@
-package br.com.abrantes.GerenciamentoCampo.dto.request;
+package br.com.abrantes.GerenciamentoCampo.dto.response;
 
 import br.com.abrantes.GerenciamentoCampo.entity.ReservaEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.StatusReserva;
