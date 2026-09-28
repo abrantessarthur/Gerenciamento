@@ -1,10 +1,12 @@
 package br.com.abrantes.GerenciamentoCampo;
 
 import br.com.abrantes.GerenciamentoCampo.dto.request.CriarReservaDto;
+import br.com.abrantes.GerenciamentoCampo.dto.request.ReservaDto;
 import br.com.abrantes.GerenciamentoCampo.entity.CampoEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.UsuarioEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.Status;
 import br.com.abrantes.GerenciamentoCampo.exception.HorarioIndisponivelException;
+import br.com.abrantes.GerenciamentoCampo.exception.IdempotencyKeyConflictException;
 import br.com.abrantes.GerenciamentoCampo.repository.CampoRepository;
 import br.com.abrantes.GerenciamentoCampo.repository.ReservaRepository;
 import br.com.abrantes.GerenciamentoCampo.repository.UsuarioRepository;
@@ -26,8 +28,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
@@ -54,12 +55,12 @@ public class ReservaConcorrenciaIntegrationTest {
     static MySQLContainer mysql = new MySQLContainer("mysql:8.4");
 
     @Test
-    void deveIniciarMySqlContainer(){
+    void deveIniciarMySqlContainer() {
         assertTrue(mysql.isRunning());
     }
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         reservaRepository.deleteAllInBatch();
         campoRepository.deleteAllInBatch();
         usuarioRepository.deleteAllInBatch();
@@ -96,7 +97,7 @@ public class ReservaConcorrenciaIntegrationTest {
                 try {
                     try {
                         countDownLatch.await();
-                        reservaService.reservarCampo(criar);
+                        reservaService.reservarCampo(criar, "11");
                         sucessos.incrementAndGet();
                     } catch (HorarioIndisponivelException e) {
                         conflitos.incrementAndGet();
@@ -117,4 +118,26 @@ public class ReservaConcorrenciaIntegrationTest {
         assertEquals(1L, reservaRepository.count());
     }
 
+    @Test
+    void repeteAMesmaChave() {
+        CriarReservaDto criar = new CriarReservaDto(usuarioId, campoId, dataReserva.atTime(10, 0), dataReserva.atTime(11, 0));
+        ReservaDto reserva1 = reservaService.reservarCampo(criar, "chave-123");
+        ReservaDto reserva2 = reservaService.reservarCampo(criar, "chave-123");
+        assertEquals(reserva1.id(), reserva2.id());
+        assertEquals(1L, reservaRepository.count());
+    }
+
+    @Test
+    void repeteAMesmaChaveIncorretamente() {
+        CriarReservaDto criar1 = new CriarReservaDto(usuarioId, campoId, dataReserva.atTime(10, 0), dataReserva.atTime(11, 0));
+        CriarReservaDto criar2 = new CriarReservaDto(usuarioId, campoId, dataReserva.atTime(12, 0), dataReserva.atTime(13, 0));
+        reservaService.reservarCampo(criar1, "chave-123");
+
+        assertThrows(
+                IdempotencyKeyConflictException.class,
+                () -> reservaService.reservarCampo(criar2, "chave-123")
+        );
+
+        assertEquals(1L, reservaRepository.count());
+    }
 }
