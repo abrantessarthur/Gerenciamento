@@ -9,10 +9,7 @@ import br.com.abrantes.GerenciamentoCampo.entity.ReservaEntity;
 import br.com.abrantes.GerenciamentoCampo.entity.UsuarioEntity;
 import br.com.abrantes.GerenciamentoCampo.enums.StatusReserva;
 import br.com.abrantes.GerenciamentoCampo.exception.*;
-import br.com.abrantes.GerenciamentoCampo.repository.CampoRepository;
-import br.com.abrantes.GerenciamentoCampo.repository.ReservaRepository;
-import br.com.abrantes.GerenciamentoCampo.repository.ReservasProjection;
-import br.com.abrantes.GerenciamentoCampo.repository.UsuarioRepository;
+import br.com.abrantes.GerenciamentoCampo.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,6 +33,7 @@ public class ReservaService {
     private final ReservaRepository reservaRepository;
     private final UsuarioRepository usuarioRepository;
     private final CampoRepository campoRepository;
+    private final ListaDeEsperaRepository listaDeEsperaRepository;
 
     @Transactional
     public ReservaDto reservarCampo(
@@ -297,6 +295,7 @@ public class ReservaService {
                 .toList();
     }
 
+    @Transactional
     public ReservaDto alterarStatusReserva(Long id, StatusReserva statusReserva) {
         ReservaEntity reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new ReservaNaoEncontradaException("Reserva não encontrada."));
